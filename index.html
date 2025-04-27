@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Twitch Chat World Simulator</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #fff;
+      background: #111;
+    }
+
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    #interface {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      box-sizing: border-box;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #connect-form {
+      margin-bottom: 20px;
+    }
+
+    #channel-input {
+      padding: 8px;
+      font-size: 16px;
+      border: 2px solid #6441A4;
+      border-radius: 4px;
+      margin-right: 10px;
+      width: 150px;
+      background: rgba(30, 30, 30, 0.8);
+      color: #fff;
+    }
+
+    #connect-btn {
+      padding: 8px 16px;
+      font-size: 16px;
+      background: #6441A4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #connect-btn:hover {
+      background: #7454B3;
+    }
+
+    #status {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .status.connected {
+      background: rgba(21, 87, 36, 0.7);
+    }
+
+    .status.disconnected {
+      background: rgba(114, 28, 36, 0.7);
+    }
+
+    #chat-box {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: rgba(20, 20, 20, 0.5);
+    }
+
+    .chat-message {
+      padding: 4px 0;
+      word-wrap: break-word;
+      font-size: 0.9em;
+      border-bottom: 1px solid #333;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+    }
+
+    .username {
+      font-weight: bold;
+      color: #6441A4;
+    }
+
+    .timestamp {
+      color: #999;
+      font-size: 0.8em;
+      margin-right: 5px;
+    }
+
+    #selected-info {
+      padding: 10px;
+      background: rgba(30, 30, 30, 0.7);
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-size: 0.9em;
+    }
+
+    #help-text {
+      font-size: 0.8em;
+      color: #aaa;
+      padding: 10px;
+      background: rgba(30, 30, 30, 0.7);
+      border-radius: 4px;
+    }
+
+    #controls {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .control-btn {
+      flex: 1;
+      padding: 5px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .control-btn:hover {
+      background: #444;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container"></div>
+
+  <div id="interface">
+    <h2>Twitch Chat Simulator</h2>
+    
+    <div id="connect-form">
+      <input type="text" id="channel-input" placeholder="Enter channel name">
+      <button id="connect-btn">Connect</button>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <div id="selected-info">
+      <h3>Selected Character</h3>
+      <div id="selected-details">No character selected</div>
+    </div>
+
+    <div id="controls">
+      <button class="control-btn" id="follow-btn">Follow</button>
+      <button class="control-btn" id="view-btn">Top View</button>
+      <button class="control-btn" id="reset-btn">Reset</button>
+    </div>
+
+    <div id="help-text">
+      <strong>Chat Commands:</strong><br>
+      !move [north|south|east|west] - Move your character<br>
+      !build [house|garden|shop] - Create a structure<br>
+      !interact [username] - Interact with another user<br>
+      !emote [wave|dance|sit|jump] - Perform an emote
+    </div>
+
+    <h3>Chat Messages</h3>
+    <div id="chat-box"></div>
+  </div>
+
+  <!-- Three.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+  
+  <!-- Our game scripts -->
+  <script src="tmi.js"></script>
+  <script src="world.js"></script>
+  <script src="characters.js"></script>
+  <script src="simulation.js"></script>
+  <script src="chat.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
